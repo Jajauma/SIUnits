@@ -13,8 +13,10 @@ public:
     using Period = _Period;
     using Self   = Frequency<_Rep, _Period>;
 
+    const Rep Count{};
+
     explicit Frequency(Rep count = Rep{})
-        : mCount{count}
+        : Count{count}
     {
     }
 
@@ -23,28 +25,19 @@ public:
 
     template <typename XRep>
     Frequency(const Frequency<XRep, Period>& other)
-        : mCount{CheckedCast<Rep>(other.Count())}
+        : Count{CheckedCast<Rep>(other.Count)}
     {
     }
 
     template <typename XRep>
     Self& operator=(const Frequency<XRep, Period>& other)
     {
-        mCount = CheckedCast<Rep>(other.Count());
+        const_cast<Rep&>(Count) = CheckedCast<Rep>(other.Count);
         return *this;
     }
 
-    Self& operator=(Rep value)
-    {
-        mCount = value;
-        return *this;
-    }
-
-    Self operator+() const { return Self{mCount}; }
-
-    Self operator-() const { return Self{-mCount}; }
-
-    Rep Count() const { return mCount; }
+    Self operator+() const { return Self{Count}; }
+    Self operator-() const { return Self{-Count}; }
 
 private:
     template <typename Target, typename Source>
@@ -52,11 +45,9 @@ private:
     {
         auto result = static_cast<Target>(value);
         if (static_cast<Source>(result) != value)
-            throw std::runtime_error("CheckedCast<>() failed");
+            throw std::runtime_error("Frequency::CheckedCast<>() failed");
         return result;
     }
-
-    Rep mCount{};
 };
 
 namespace Literals {
