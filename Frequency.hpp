@@ -48,7 +48,7 @@ public:
 
 private:
     template <typename Target, typename Source>
-    Target CheckedCast(Source value)
+    static Target CheckedCast(Source value)
     {
         auto result = static_cast<Target>(value);
         if (static_cast<Source>(result) != value)
