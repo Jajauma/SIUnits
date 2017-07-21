@@ -8,24 +8,26 @@ using namespace Types::Literals;
 int
 main()
 {
-    Frequency<int, std::kilo> F{-1};
-    std::cout << F.Count << std::endl;
-    // auto f0 = 1000._Hz;
-    // auto f1 = 125.1_kHz;
-    // auto f2 = 100000_Hz;
-    // auto f3 = 100_kHz;
-    // Frequency<int> f4{1_Hz};
-    // Frequency<int> f5;
+    Frequency<int, std::kilo> f1{1};
+    Frequency<int> f2{900};
+    std::cout << "f1 < f2: " << std::boolalpha << (f1 < f2) << std::endl;
+    std::cout << "f1 + f2: " << (f1 + f2).Count() << std::endl;
+    std::cout << "f1 - f2: " << (f1 - f2).Count() << std::endl;
+    std::cout << "f2 * 0.5: " << (f2 * 0.5).Count() << std::endl;
+    std::cout << "0.1 * f1: " << (0.1 * f1).Count() << std::endl;
+    std::cout << "f2 / 15: " << (f2 / 15).Count() << std::endl;
 
-    // std::cout << f0.Count << std::endl;
-    // std::cout << f1.Count << std::endl;
-    // std::cout << f2.Count << std::endl;
-    // std::cout << f3.Count << std::endl;
-    // std::cout << f4.Count << std::endl;
+    auto f3 = 1000._Hz;
+    auto f4 = 1000_Hz;
+    auto f5 = 125.1_kHz;
+    auto f6 = 100000_Hz;
+    auto f7 = 100_kHz;
 
-    // std::cout << f5.Count << std::endl;
-    // f5 = 100.5_Hz;
-    // std::cout << f5.Count << std::endl;
+    std::cout << f3.Count() << std::endl;
+    std::cout << f4.Count() << std::endl;
+    std::cout << f5.Count() << std::endl;
+    std::cout << f6.Count() << std::endl;
+    std::cout << f7.Count() << std::endl;
 
     return 0;
 }
