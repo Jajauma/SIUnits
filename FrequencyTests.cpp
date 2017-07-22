@@ -30,7 +30,7 @@ TEST(Frequency, kHz)
     EXPECT_FLOAT_EQ(g.Count(), 300.0);
 }
 
-TEST(Frequency, IntegerMHz)
+TEST(Frequency, MHz)
 {
     SI::Frequency<int, std::mega> f = -1_MHz;
     EXPECT_EQ(f.Count(), -1);
@@ -44,4 +44,12 @@ TEST(Frequency, GHz)
     EXPECT_EQ(f.Count(), 0);
     SI::Frequency<double, std::giga> g = 3.3_GHz;
     EXPECT_FLOAT_EQ(g.Count(), 3.3);
+}
+
+TEST(Frequency, THz)
+{
+    SI::Frequency<int, std::tera> f = 430_THz;
+    EXPECT_EQ(f.Count(), 430);
+    SI::Frequency<double, std::tera> g = .11_THz;
+    EXPECT_FLOAT_EQ(g.Count(), 0.11);
 }

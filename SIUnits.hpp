@@ -470,6 +470,10 @@ constexpr Frequency<Float, std::giga> operator"" _GHz(Float count)
 {
     return Frequency<Float, std::giga>{count};
 }
+constexpr Frequency<Float, std::tera> operator"" _THz(Float count)
+{
+    return Frequency<Float, std::tera>{count};
+}
 constexpr Frequency<Integer> operator"" _Hz(Integer count)
 {
     return Frequency<Integer>{count};
@@ -485,6 +489,10 @@ constexpr Frequency<Integer, std::mega> operator"" _MHz(Integer count)
 constexpr Frequency<Integer, std::giga> operator"" _GHz(Integer count)
 {
     return Frequency<Integer, std::giga>{count};
+}
+constexpr Frequency<Integer, std::tera> operator"" _THz(Integer count)
+{
+    return Frequency<Integer, std::tera>{count};
 }
 // }}}
 } /* namespace Literals  */
