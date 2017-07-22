@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-using namespace SI::Literals;
-
 struct XClass;
 template <typename Rep, typename Period = std::ratio<1>>
 using X = SI::Units<Rep, Period, XClass>;
@@ -192,11 +190,4 @@ TEST(UnitsTest, GreaterEqualOperator)
     X<float, std::mega> h{0.1};
     EXPECT_GE(f, g);
     EXPECT_GE(f, h);
-}
-
-int
-main(int argc, char* argv[])
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

@@ -6,4 +6,4 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(GTest REQUIRED)
 add_executable(SIUnits.Tests SIUnits.Tests.cpp)
-target_link_libraries(SIUnits.Tests GTest::GTest)
+target_link_libraries(SIUnits.Tests GTest::Main)
