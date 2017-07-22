@@ -440,19 +440,19 @@ operator>=(const Units<Rep1, Period1, Class>& lhs,
 
 // {{{ Application types definition
 namespace Implementation {
-struct Frequency;
-struct Length;
+struct Hertz;
+struct Meter;
 } /* namespace Implementation */
 
 template <typename Rep, typename Period = std::ratio<1>>
-struct Frequency : public Units<Rep, Period, Implementation::Frequency>
+struct Frequency : public Units<Rep, Period, Implementation::Hertz>
 {
-    using Units<Rep, Period, Implementation::Frequency>::Units;
+    using Units<Rep, Period, Implementation::Hertz>::Units;
 };
 template <typename Rep, typename Period = std::ratio<1>>
-struct Length : public Units<Rep, Period, Implementation::Length>
+struct Length : public Units<Rep, Period, Implementation::Meter>
 {
-    using Units<Rep, Period, Implementation::Length>::Units;
+    using Units<Rep, Period, Implementation::Meter>::Units;
 };
 // }}}
 
