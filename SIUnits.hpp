@@ -440,12 +440,18 @@ operator>=(const Units<Rep1, Period1, Class>& lhs,
 // {{{ Application types definition
 namespace Implementation {
 struct Frequency;
+struct Length;
 } /* namespace Implementation */
 
 template <typename Rep, typename Period = std::ratio<1>>
 struct Frequency : public Units<Rep, Period, Implementation::Frequency>
 {
     using Units<Rep, Period, Implementation::Frequency>::Units;
+};
+template <typename Rep, typename Period = std::ratio<1>>
+struct Length : public Units<Rep, Period, Implementation::Length>
+{
+    using Units<Rep, Period, Implementation::Length>::Units;
 };
 // }}}
 
@@ -493,6 +499,57 @@ constexpr Frequency<Integer, std::giga> operator"" _GHz(Integer count)
 constexpr Frequency<Integer, std::tera> operator"" _THz(Integer count)
 {
     return Frequency<Integer, std::tera>{count};
+}
+// }}}
+
+// {{{ Supported set of literal operators for Length
+constexpr Length<Float, std::nano> operator"" _nm(Float count)
+{
+    return Length<Float, std::nano>{count};
+}
+constexpr Length<Float, std::micro> operator"" _mcm(Float count)
+{
+    return Length<Float, std::micro>{count};
+}
+constexpr Length<Float, std::milli> operator"" _mm(Float count)
+{
+    return Length<Float, std::milli>{count};
+}
+constexpr Length<Float, std::centi> operator"" _cm(Float count)
+{
+    return Length<Float, std::centi>{count};
+}
+constexpr Length<Float> operator"" _m(Float count)
+{
+    return Length<Float>{count};
+}
+constexpr Length<Float, std::kilo> operator"" _km(Float count)
+{
+    return Length<Float, std::kilo>{count};
+}
+constexpr Length<Integer, std::nano> operator"" _nm(Integer count)
+{
+    return Length<Integer, std::nano>{count};
+}
+constexpr Length<Integer, std::micro> operator"" _mcm(Integer count)
+{
+    return Length<Integer, std::micro>{count};
+}
+constexpr Length<Integer, std::milli> operator"" _mm(Integer count)
+{
+    return Length<Integer, std::milli>{count};
+}
+constexpr Length<Integer, std::centi> operator"" _cm(Integer count)
+{
+    return Length<Integer, std::centi>{count};
+}
+constexpr Length<Integer> operator"" _m(Integer count)
+{
+    return Length<Integer>{count};
+}
+constexpr Length<Integer, std::kilo> operator"" _km(Integer count)
+{
+    return Length<Integer, std::kilo>{count};
 }
 // }}}
 } /* namespace Literals  */
