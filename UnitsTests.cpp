@@ -6,14 +6,14 @@ struct XClass;
 template <typename Rep, typename Period = std::ratio<1>>
 using X = SI::Units<Rep, Period, XClass>;
 
-TEST(UnitsTest, ConstructFromRep2)
+TEST(Units, ConstructFromRep2)
 {
     EXPECT_EQ(X<int>{10}.Count(), 10);
     EXPECT_FLOAT_EQ(X<float>{9}.Count(), 9.0);
     EXPECT_FLOAT_EQ(X<float>{-2.1}.Count(), -2.1);
 }
 
-TEST(UnitsTest, ConstructFromOther)
+TEST(Units, ConstructFromOther)
 {
     X<int> f{1999};
     X<int> g{f};
@@ -26,7 +26,7 @@ TEST(UnitsTest, ConstructFromOther)
     EXPECT_FLOAT_EQ(i.Count(), 1999.0);
 }
 
-TEST(UnitsTest, AssigmentOperator)
+TEST(Units, AssigmentOperator)
 {
     X<int> f{1};
     X<int> g{5};
@@ -34,19 +34,19 @@ TEST(UnitsTest, AssigmentOperator)
     EXPECT_EQ(g.Count(), 1);
 }
 
-TEST(UnitsTest, PlusOperator)
+TEST(Units, PlusOperator)
 {
     X<int> f{1000};
     EXPECT_EQ((+f).Count(), f.Count());
 }
 
-TEST(UnitsTest, MinusOperator)
+TEST(Units, MinusOperator)
 {
     X<int> f{1000};
     EXPECT_EQ((-f).Count(), -f.Count());
 }
 
-TEST(UnitsTest, IncrementOperator)
+TEST(Units, IncrementOperator)
 {
     X<int> f{999};
     EXPECT_EQ((++f).Count(), 1000);
@@ -54,7 +54,7 @@ TEST(UnitsTest, IncrementOperator)
     EXPECT_EQ(f.Count(), 1001);
 }
 
-TEST(UnitsTest, DecrementOperator)
+TEST(Units, DecrementOperator)
 {
     X<int> f{0};
     EXPECT_EQ((--f).Count(), -1);
@@ -62,7 +62,7 @@ TEST(UnitsTest, DecrementOperator)
     EXPECT_EQ(f.Count(), -2);
 }
 
-TEST(UnitsTest, AssigmentPlusOperator)
+TEST(Units, AssigmentPlusOperator)
 {
     X<int> f{1};
     X<int> g{5};
@@ -70,7 +70,7 @@ TEST(UnitsTest, AssigmentPlusOperator)
     EXPECT_EQ(g.Count(), 6);
 }
 
-TEST(UnitsTest, AssigmentMinusOperator)
+TEST(Units, AssigmentMinusOperator)
 {
     X<int> f{1};
     X<int> g{5};
@@ -78,7 +78,7 @@ TEST(UnitsTest, AssigmentMinusOperator)
     EXPECT_EQ(f.Count(), -4);
 }
 
-TEST(UnitsTest, AssigmentMultiplyOperator)
+TEST(Units, AssigmentMultiplyOperator)
 {
     X<float> f{0.1};
     f *= 7;
@@ -87,7 +87,7 @@ TEST(UnitsTest, AssigmentMultiplyOperator)
     EXPECT_FLOAT_EQ(f.Count(), 0.35);
 }
 
-TEST(UnitsTest, AssigmentDivideOperator)
+TEST(Units, AssigmentDivideOperator)
 {
     X<int> f{49};
     f /= 7.0;
@@ -96,14 +96,14 @@ TEST(UnitsTest, AssigmentDivideOperator)
     EXPECT_EQ(f.Count(), 0);
 }
 
-TEST(UnitsTest, AssignmentModuloOperator)
+TEST(Units, AssignmentModuloOperator)
 {
     X<int> f{33};
     f %= 32;
     EXPECT_EQ(f.Count(), 1);
 }
 
-TEST(UnitsTest, BinaryPlusOperator)
+TEST(Units, BinaryPlusOperator)
 {
     X<float, std::kilo> f{3};
     X<int> g{-700};
@@ -111,7 +111,7 @@ TEST(UnitsTest, BinaryPlusOperator)
     EXPECT_FLOAT_EQ(res.Count(), 2.3);
 }
 
-TEST(UnitsTest, BinaryMinusOperator)
+TEST(Units, BinaryMinusOperator)
 {
     X<int> f{1000000};
     X<float, std::mega> g{1};
@@ -119,7 +119,7 @@ TEST(UnitsTest, BinaryMinusOperator)
     EXPECT_FLOAT_EQ(res.Count(), 0.);
 }
 
-TEST(UnitsTest, BinaryMultiplyOperator)
+TEST(Units, BinaryMultiplyOperator)
 {
     X<float, std::kilo> f{5};
     X<float, std::kilo> res = f * 2;
@@ -128,7 +128,7 @@ TEST(UnitsTest, BinaryMultiplyOperator)
     EXPECT_FLOAT_EQ(res.Count(), 0.5);
 }
 
-TEST(UnitsTest, BinaryDivideOperator)
+TEST(Units, BinaryDivideOperator)
 {
     X<int, std::kilo> f{25};
     X<int, std::kilo> res = f / 5;
@@ -138,7 +138,7 @@ TEST(UnitsTest, BinaryDivideOperator)
     EXPECT_FLOAT_EQ(f / g, 1000);
 }
 
-TEST(UnitsTest, BinaryModuloOperator)
+TEST(Units, BinaryModuloOperator)
 {
     X<int, std::kilo> f{42};
     X<int, std::kilo> g{40};
@@ -146,28 +146,28 @@ TEST(UnitsTest, BinaryModuloOperator)
     EXPECT_EQ((f % 40).Count(), 2);
 }
 
-TEST(UnitsTest, ComparisonOperator)
+TEST(Units, ComparisonOperator)
 {
     X<float, std::kilo> f{15};
     X<float> g{15000};
     EXPECT_EQ(f, g);
 }
 
-TEST(UnitsTest, LessOperator)
+TEST(Units, LessOperator)
 {
     X<float, std::kilo> f{15};
     X<int> g{20000};
     EXPECT_LE(f, g);
 }
 
-TEST(UnitsTest, NotEqualOperator)
+TEST(Units, NotEqualOperator)
 {
     X<int, std::kilo> f{1};
     X<float> g{500};
     EXPECT_NE(f, g);
 }
 
-TEST(UnitsTest, LessEqualOperator)
+TEST(Units, LessEqualOperator)
 {
     X<int, std::kilo> f{5};
     X<float> g{5000};
@@ -176,14 +176,14 @@ TEST(UnitsTest, LessEqualOperator)
     EXPECT_LE(f, h);
 }
 
-TEST(UnitsTest, GreaterOperator)
+TEST(Units, GreaterOperator)
 {
     X<int> f{115000};
     X<float, std::kilo> g{125};
     EXPECT_GT(g, f);
 }
 
-TEST(UnitsTest, GreaterEqualOperator)
+TEST(Units, GreaterEqualOperator)
 {
     X<int, std::kilo> f{300};
     X<float> g{300000};
