@@ -234,7 +234,7 @@ public:
     }
     Units& operator-=(const Units& f)
     {
-        mCount -= f.count();
+        mCount -= f.Count();
         return *this;
     }
     Units& operator*=(const Rep& rhs)
