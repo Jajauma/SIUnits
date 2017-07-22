@@ -1,15 +1,15 @@
-#include "Frequency.hpp"
+#include "SIUnits.hpp"
 
 #include <iostream>
 
-using namespace Types;
-using namespace Types::Literals;
+using namespace SI::Literals;
 
 int
 main()
 {
-    Frequency<int, std::kilo> f1{1};
-    Frequency<int> f2{900};
+    SI::Frequency<int, std::kilo> f1{1};
+    SI::Frequency<int> f2{900};
+
     std::cout << "f1 < f2: " << std::boolalpha << (f1 < f2) << std::endl;
     std::cout << "f1 + f2: " << (f1 + f2).Count() << std::endl;
     std::cout << "f1 - f2: " << (f1 - f2).Count() << std::endl;
