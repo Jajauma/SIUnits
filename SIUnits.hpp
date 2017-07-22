@@ -172,12 +172,13 @@ UnitsCast(const Units<Rep, Period, Class>& f)
 // }}}
 
 // {{{ Units type definition
-template <typename _Rep, typename _Period, typename Class>
+template <typename _Rep, typename _Period, typename _Class>
 class Units
 {
 public:
     using Rep    = _Rep;
     using Period = _Period;
+    using Class  = _Class;
 
     static_assert(Implementation::IsRatio<_Period>::value,
                   "period must be a specialization of ratio");
