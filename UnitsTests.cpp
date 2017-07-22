@@ -191,3 +191,27 @@ TEST(Units, GreaterEqualOperator)
     EXPECT_GE(f, g);
     EXPECT_GE(f, h);
 }
+
+TEST(Units, ConstexprSwitch)
+{
+    constexpr X<int> x1{100}, x2{200}, x3{300};
+
+    switch (300)
+    {
+    case x1.Count():
+        FAIL();
+        break;
+
+    case x2.Count():
+        FAIL();
+        break;
+
+    case x3.Count():
+        SUCCEED();
+        break;
+
+    default:
+        FAIL();
+        break;
+    }
+}
