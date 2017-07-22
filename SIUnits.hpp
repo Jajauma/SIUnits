@@ -437,13 +437,11 @@ operator>=(const Units<Rep1, Period1, Class>& lhs,
 }
 // }}}
 
+// {{{ Application types definition
 namespace Implementation {
-struct Frequency
-{
-};
+struct Frequency;
 } /* namespace Implementation */
 
-// {{{ Application types definition
 template <typename Rep, typename Period = std::ratio<1>>
 struct Frequency : public Units<Rep, Period, Implementation::Frequency>
 {

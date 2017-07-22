@@ -4,9 +4,7 @@
 
 using namespace SI::Literals;
 
-struct XClass
-{
-};
+struct XClass;
 template <typename Rep, typename Period = std::ratio<1>>
 using X = SI::Units<Rep, Period, XClass>;
 
