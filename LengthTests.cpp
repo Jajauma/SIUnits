@@ -12,11 +12,11 @@ TEST(Length, nm)
     EXPECT_FLOAT_EQ(g.Count(), 10e9);
 }
 
-TEST(Length, mcm)
+TEST(Length, um)
 {
-    SI::Length<int, std::micro> f = 650_mcm;
+    SI::Length<int, std::micro> f = 650_um;
     EXPECT_EQ(f.Count(), 650);
-    SI::Length<float, std::micro> g = 2.99_mcm;
+    SI::Length<float, std::micro> g = 2.99_um;
     EXPECT_FLOAT_EQ(g.Count(), 2.99);
 }
 

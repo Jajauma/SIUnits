@@ -530,7 +530,7 @@ constexpr Length<Float, std::nano> operator"" _nm(Float count)
 {
     return Length<Float, std::nano>{count};
 }
-constexpr Length<Float, std::micro> operator"" _mcm(Float count)
+constexpr Length<Float, std::micro> operator"" _um(Float count)
 {
     return Length<Float, std::micro>{count};
 }
@@ -554,7 +554,7 @@ constexpr Length<Integer, std::nano> operator"" _nm(Integer count)
 {
     return Length<Integer, std::nano>{count};
 }
-constexpr Length<Integer, std::micro> operator"" _mcm(Integer count)
+constexpr Length<Integer, std::micro> operator"" _um(Integer count)
 {
     return Length<Integer, std::micro>{count};
 }
