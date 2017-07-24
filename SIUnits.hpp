@@ -46,6 +46,21 @@ struct FailureType
 {
 };
 
+struct MemberTypeWrapperBase
+{
+    template <typename T>
+    static SuccessType<typename T::type> Test(int);
+
+    template <typename>
+    static FailureType Test(...);
+};
+
+template <typename T>
+struct MemberTypeWrapper : private MemberTypeWrapperBase
+{
+    using type = decltype(Test<T>(0));
+};
+
 template <typename _CommonRep, typename Period1, typename Period2,
           typename Class>
 struct CommonTypeWrapper
@@ -151,8 +166,8 @@ template <typename Rep1, typename Period1, typename Rep2, typename Period2,
 struct common_type<SI::Units<Rep1, Period1, Class>,
                    SI::Units<Rep2, Period2, Class>>
     : public SI::Implementation::CommonTypeWrapper<
-          // TODO: FIXME: get rid of GNU CXX internals
-          typename __member_type_wrapper<common_type<Rep1, Rep2>>::type,
+          typename SI::Implementation::
+              MemberTypeWrapper<common_type<Rep1, Rep2>>::type,
           Period1, Period2, Class>::type
 {
 };
