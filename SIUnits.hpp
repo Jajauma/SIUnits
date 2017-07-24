@@ -36,6 +36,16 @@ struct GCD<0, Q> : std::integral_constant<intmax_t, Abs<Q>::value>
 // }}}
 
 // {{{ Helper types for std::common_type specialization
+template <typename T>
+struct SuccessType
+{
+    using type = T;
+};
+
+struct FailureType
+{
+};
+
 template <typename _CommonRep, typename Period1, typename Period2,
           typename Class>
 struct CommonTypeWrapper
@@ -49,16 +59,13 @@ private:
                      (Period1::den / DenGCD::value) * Period2::den>;
 
 public:
-    // TODO: FIXME: get rid of GNU CXX internals
-    using type = std::__success_type<Units<CommonRep, CommonPeriod, Class>>;
+    using type = SuccessType<Units<CommonRep, CommonPeriod, Class>>;
 };
 
 template <typename Period1, typename Period2, typename Class>
-// TODO: FIXME: get rid of GNU CXX internals
-struct CommonTypeWrapper<std::__failure_type, Period1, Period2, Class>
+struct CommonTypeWrapper<FailureType, Period1, Period2, Class>
 {
-    // TODO: FIXME: get rid of GNU CXX internals
-    typedef std::__failure_type type;
+    using type = FailureType;
 };
 // }}}
 
