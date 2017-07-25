@@ -157,6 +157,11 @@ struct IsUnits<Units<Rep, Period, Class>> : std::true_type
 {
 };
 // }}}
+
+// {{{ Helper types used in literal operators
+using FloatLiteral   = long double;
+using IntegerLiteral = unsigned long long int;
+// }}}
 } /* namespace Implementation */
 } /* namespace SI */
 
@@ -480,118 +485,20 @@ operator>>(std::istream& stream, Units<Rep, Period, Class>& rhs)
     return stream;
 }
 // }}}
-
-// {{{ Application types definition
-namespace Implementation {
-struct Hertz;
-struct Meter;
-} /* namespace Implementation */
-
-template <typename Rep, typename Period = std::ratio<1>>
-using Frequency = Units<Rep, Period, Implementation::Hertz>;
-
-template <typename Rep, typename Period = std::ratio<1>>
-using Length = Units<Rep, Period, Implementation::Meter>;
-// }}}
-
-namespace Literals {
-using Float   = long double;
-using Integer = unsigned long long int;
-
-// {{{ Supported set of literal operators for Frequency
-constexpr Frequency<Float> operator"" _Hz(Float count)
-{
-    return Frequency<Float>{count};
-}
-constexpr Frequency<Float, std::kilo> operator"" _kHz(Float count)
-{
-    return Frequency<Float, std::kilo>{count};
-}
-constexpr Frequency<Float, std::mega> operator"" _MHz(Float count)
-{
-    return Frequency<Float, std::mega>{count};
-}
-constexpr Frequency<Float, std::giga> operator"" _GHz(Float count)
-{
-    return Frequency<Float, std::giga>{count};
-}
-constexpr Frequency<Float, std::tera> operator"" _THz(Float count)
-{
-    return Frequency<Float, std::tera>{count};
-}
-constexpr Frequency<Integer> operator"" _Hz(Integer count)
-{
-    return Frequency<Integer>{count};
-}
-constexpr Frequency<Integer, std::kilo> operator"" _kHz(Integer count)
-{
-    return Frequency<Integer, std::kilo>{count};
-}
-constexpr Frequency<Integer, std::mega> operator"" _MHz(Integer count)
-{
-    return Frequency<Integer, std::mega>{count};
-}
-constexpr Frequency<Integer, std::giga> operator"" _GHz(Integer count)
-{
-    return Frequency<Integer, std::giga>{count};
-}
-constexpr Frequency<Integer, std::tera> operator"" _THz(Integer count)
-{
-    return Frequency<Integer, std::tera>{count};
-}
-// }}}
-
-// {{{ Supported set of literal operators for Length
-constexpr Length<Float, std::nano> operator"" _nm(Float count)
-{
-    return Length<Float, std::nano>{count};
-}
-constexpr Length<Float, std::micro> operator"" _um(Float count)
-{
-    return Length<Float, std::micro>{count};
-}
-constexpr Length<Float, std::milli> operator"" _mm(Float count)
-{
-    return Length<Float, std::milli>{count};
-}
-constexpr Length<Float, std::centi> operator"" _cm(Float count)
-{
-    return Length<Float, std::centi>{count};
-}
-constexpr Length<Float> operator"" _m(Float count)
-{
-    return Length<Float>{count};
-}
-constexpr Length<Float, std::kilo> operator"" _km(Float count)
-{
-    return Length<Float, std::kilo>{count};
-}
-constexpr Length<Integer, std::nano> operator"" _nm(Integer count)
-{
-    return Length<Integer, std::nano>{count};
-}
-constexpr Length<Integer, std::micro> operator"" _um(Integer count)
-{
-    return Length<Integer, std::micro>{count};
-}
-constexpr Length<Integer, std::milli> operator"" _mm(Integer count)
-{
-    return Length<Integer, std::milli>{count};
-}
-constexpr Length<Integer, std::centi> operator"" _cm(Integer count)
-{
-    return Length<Integer, std::centi>{count};
-}
-constexpr Length<Integer> operator"" _m(Integer count)
-{
-    return Length<Integer>{count};
-}
-constexpr Length<Integer, std::kilo> operator"" _km(Integer count)
-{
-    return Length<Integer, std::kilo>{count};
-}
-// }}}
-} /* namespace Literals  */
 } /* namespace SI  */
+
+// {{{ Helper macros
+#define SI_UNITS_DEFINE_LITERAL(TYPE, PERIOD, LITERAL)                  \
+    constexpr TYPE<SI::Implementation::FloatLiteral, PERIOD>            \
+    operator"" LITERAL(SI::Implementation::FloatLiteral count)          \
+    {                                                                   \
+        return TYPE<SI::Implementation::FloatLiteral, PERIOD>{count};   \
+    }                                                                   \
+    constexpr TYPE<SI::Implementation::IntegerLiteral, PERIOD>          \
+    operator"" LITERAL(SI::Implementation::IntegerLiteral count)        \
+    {                                                                   \
+        return TYPE<SI::Implementation::IntegerLiteral, PERIOD>{count}; \
+    }
+// }}}
 
 #endif /* end of the header guard */
