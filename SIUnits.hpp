@@ -488,15 +488,10 @@ struct Meter;
 } /* namespace Implementation */
 
 template <typename Rep, typename Period = std::ratio<1>>
-struct Frequency : public Units<Rep, Period, Implementation::Hertz>
-{
-    using Units<Rep, Period, Implementation::Hertz>::Units;
-};
+using Frequency = Units<Rep, Period, Implementation::Hertz>;
+
 template <typename Rep, typename Period = std::ratio<1>>
-struct Length : public Units<Rep, Period, Implementation::Meter>
-{
-    using Units<Rep, Period, Implementation::Meter>::Units;
-};
+using Length = Units<Rep, Period, Implementation::Meter>;
 // }}}
 
 namespace Literals {
