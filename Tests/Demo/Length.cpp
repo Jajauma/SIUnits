@@ -1,8 +1,6 @@
-#include "SIUnits.hpp"
+#include "Demo/Length.hpp"
 
 #include <gtest/gtest.h>
-
-using namespace SI::Literals;
 
 TEST(Length, nm)
 {

@@ -1,8 +1,6 @@
-#include "SIUnits.hpp"
+#include "Demo/Frequency.hpp"
 
 #include <gtest/gtest.h>
-
-using namespace SI::Literals;
 
 TEST(Frequency, UsingCxx11Auto)
 {
