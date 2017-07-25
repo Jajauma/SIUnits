@@ -1,6 +1,7 @@
 #ifndef HEADER_700EA8EA_5F41_11E7_93E4_74D4359F3068_INCLUDED
 #define HEADER_700EA8EA_5F41_11E7_93E4_74D4359F3068_INCLUDED
 
+#include <iosfwd>
 #include <ratio>
 #include <type_traits>
 
@@ -457,6 +458,26 @@ operator>=(const Units<Rep1, Period1, Class>& lhs,
            const Units<Rep2, Period2, Class>& rhs)
 {
     return !(lhs < rhs);
+}
+// }}}
+
+// {{{ Supported stream insertion and extraction operators
+template <typename Rep, typename Period, typename Class>
+std::ostream&
+operator<<(std::ostream& stream, const Units<Rep, Period, Class>& rhs)
+{
+    stream << rhs.Count();
+    return stream;
+}
+
+template <typename Rep, typename Period, typename Class>
+std::ostream&
+operator>>(std::istream& stream, Units<Rep, Period, Class>& rhs)
+{
+    Rep tmp{};
+    stream >> tmp;
+    rhs = tmp;
+    return stream;
 }
 // }}}
 
