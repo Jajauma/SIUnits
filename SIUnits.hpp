@@ -188,6 +188,7 @@ struct common_type<SI::Units<Rep1, Period1, Class>,
 // }}}
 
 namespace SI {
+namespace Implementation {
 // {{{ Cast between Units of the same Class
 template <typename To, typename Rep, typename Period, typename Class>
 constexpr typename std::enable_if<Implementation::IsUnits<To>::value, To>::type
@@ -205,6 +206,7 @@ unitsCast(const Units<Rep, Period, Class>& f)
     return Impl::cast(f);
 }
 // }}}
+} /* namespace Implementation  */
 
 // {{{ Units type definition
 template <typename _Rep, typename _Period, typename _Class>
@@ -238,7 +240,7 @@ public:
                   || (std::ratio_divide<Period2, Period>::den == 1
                       && !std::is_floating_point<Rep2>::value)>::type>
     constexpr Units(const Units<Rep2, Period2, Class>& f)
-        : mCount{unitsCast<Units>(f).count()}
+        : mCount{Implementation::unitsCast<Units>(f).count()}
     {
     }
 
