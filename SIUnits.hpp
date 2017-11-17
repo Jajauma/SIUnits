@@ -18,18 +18,22 @@ template <intmax_t P>
 struct Sign : std::integral_constant<intmax_t, (P < 0) ? -1 : 1>
 {
 };
+
 template <intmax_t P>
 struct Abs : std::integral_constant<intmax_t, P * Sign<P>::value>
 {
 };
+
 template <intmax_t P, intmax_t Q>
 struct GCD : GCD<Q, (P % Q)>
 {
 };
+
 template <intmax_t P>
 struct GCD<P, 0> : std::integral_constant<intmax_t, Abs<P>::value>
 {
 };
+
 template <intmax_t Q>
 struct GCD<0, Q> : std::integral_constant<intmax_t, Abs<Q>::value>
 {
@@ -144,14 +148,17 @@ template <typename T>
 struct IsRatio : std::false_type
 {
 };
+
 template <intmax_t Num, intmax_t Den>
 struct IsRatio<std::ratio<Num, Den>> : std::true_type
 {
 };
+
 template <typename T>
 struct IsUnits : std::false_type
 {
 };
+
 template <typename Rep, typename Period, typename Class>
 struct IsUnits<Units<Rep, Period, Class>> : std::true_type
 {
@@ -172,8 +179,8 @@ template <typename Rep1, typename Period1, typename Rep2, typename Period2,
 struct common_type<SI::Units<Rep1, Period1, Class>,
                    SI::Units<Rep2, Period2, Class>>
     : public SI::Implementation::CommonTypeWrapper<
-          typename SI::Implementation::
-              MemberTypeWrapper<common_type<Rep1, Rep2>>::type,
+          typename SI::Implementation::MemberTypeWrapper<
+              common_type<Rep1, Rep2>>::type,
           Period1, Period2, Class>::type
 {
 };
@@ -216,20 +223,20 @@ public:
     Units(const Units&) = default;
 
     template <typename Rep2,
-              typename = typename std::
-                  enable_if<std::is_convertible<Rep2, Rep>::value
-                            && (std::is_floating_point<Rep>::value
-                                || !std::is_floating_point<Rep2>::value)>::type>
+              typename = typename std::enable_if<
+                  std::is_convertible<Rep2, Rep>::value
+                  && (std::is_floating_point<Rep>::value
+                      || !std::is_floating_point<Rep2>::value)>::type>
     constexpr explicit Units(const Rep2& rep)
         : mCount(static_cast<Rep>(rep))
     {
     }
 
     template <typename Rep2, typename Period2,
-              typename = typename std::
-                  enable_if<std::is_floating_point<Rep>::value
-                            || (std::ratio_divide<Period2, Period>::den == 1
-                                && !std::is_floating_point<Rep2>::value)>::type>
+              typename = typename std::enable_if<
+                  std::is_floating_point<Rep>::value
+                  || (std::ratio_divide<Period2, Period>::den == 1
+                      && !std::is_floating_point<Rep2>::value)>::type>
     constexpr Units(const Units<Rep2, Period2, Class>& f)
         : mCount(unitsCast<Units>(f).count())
     {
@@ -247,6 +254,7 @@ public:
         ++mCount;
         return *this;
     }
+
     Units& operator--()
     {
         --mCount;
@@ -261,21 +269,25 @@ public:
         mCount += f.count();
         return *this;
     }
+
     Units& operator-=(const Units& f)
     {
         mCount -= f.count();
         return *this;
     }
+
     Units& operator*=(const Rep& rhs)
     {
         mCount *= rhs;
         return *this;
     }
+
     Units& operator/=(const Rep& rhs)
     {
         mCount /= rhs;
         return *this;
     }
+
     template <typename Rep2 = Rep>
     typename std::enable_if<!std::is_floating_point<Rep2>::value, Units&>::type
     operator%=(const Rep& rhs)
@@ -283,6 +295,7 @@ public:
         mCount %= rhs;
         return *this;
     }
+
     template <typename Rep2 = Rep>
     typename std::enable_if<!std::is_floating_point<Rep2>::value, Units&>::type
     operator%=(const Units& f)
@@ -323,11 +336,9 @@ operator-(const Units<Rep1, Period1, Class>& lhs,
     return Promote(Promote(lhs).count() - Promote(rhs).count());
 }
 
-template <
-    typename Rep1, typename Rep2,
-    bool
-    = std::is_convertible<Rep2,
-                          typename std::common_type<Rep1, Rep2>::type>::value>
+template <typename Rep1, typename Rep2,
+          bool = std::is_convertible<
+              Rep2, typename std::common_type<Rep1, Rep2>::type>::value>
 struct CommonRep
 {
 };
@@ -356,9 +367,9 @@ operator*(const Rep1& s, const Units<Rep2, Period, Class>& f)
 
 template <typename Rep1, typename Period, typename Rep2, typename Class>
 constexpr Units<
-    typename CommonRep<Rep1, typename std::enable_if<!Implementation::
-                                                         IsUnits<Rep2>::value,
-                                                     Rep2>::type>::type,
+    typename CommonRep<
+        Rep1, typename std::enable_if<!Implementation::IsUnits<Rep2>::value,
+                                      Rep2>::type>::type,
     Period, Class>
 operator/(const Units<Rep1, Period, Class>& f, const Rep2& s)
 {
@@ -381,9 +392,9 @@ operator/(const Units<Rep1, Period1, Class>& lhs,
 
 template <typename Rep1, typename Period, typename Rep2, typename Class>
 constexpr Units<
-    typename CommonRep<Rep1, typename std::enable_if<!Implementation::
-                                                         IsUnits<Rep2>::value,
-                                                     Rep2>::type>::type,
+    typename CommonRep<
+        Rep1, typename std::enable_if<!Implementation::IsUnits<Rep2>::value,
+                                      Rep2>::type>::type,
     Period, Class>
 operator%(const Units<Rep1, Period, Class>& f, const Rep2& s)
 {
