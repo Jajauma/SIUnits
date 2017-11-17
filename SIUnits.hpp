@@ -91,11 +91,11 @@ template <typename To, typename PeriodQuot, typename CommonRep,
 struct UnitsCast
 {
     template <typename Rep, typename Period, typename Class>
-    static constexpr To Cast(const Units<Rep, Period, Class>& f)
+    static constexpr To cast(const Units<Rep, Period, Class>& f)
     {
         using ToRep = typename To::Rep;
         return To(
-            static_cast<ToRep>(static_cast<CommonRep>(f.Count())
+            static_cast<ToRep>(static_cast<CommonRep>(f.count())
                                * static_cast<CommonRep>(PeriodQuot::num)
                                / static_cast<CommonRep>(PeriodQuot::den)));
     }
@@ -105,10 +105,10 @@ template <typename To, typename PeriodQuot, typename CommonRep>
 struct UnitsCast<To, PeriodQuot, CommonRep, true, true>
 {
     template <typename Rep, typename Period, typename Class>
-    static constexpr To Cast(const Units<Rep, Period, Class>& f)
+    static constexpr To cast(const Units<Rep, Period, Class>& f)
     {
         using ToRep = typename To::Rep;
-        return To(static_cast<ToRep>(f.Count()));
+        return To(static_cast<ToRep>(f.count()));
     }
 };
 
@@ -116,11 +116,11 @@ template <typename To, typename PeriodQuot, typename CommonRep>
 struct UnitsCast<To, PeriodQuot, CommonRep, true, false>
 {
     template <typename Rep, typename Period, typename Class>
-    static constexpr To Cast(const Units<Rep, Period, Class>& f)
+    static constexpr To cast(const Units<Rep, Period, Class>& f)
     {
         using ToRep = typename To::Rep;
         return To(
-            static_cast<ToRep>(static_cast<CommonRep>(f.Count())
+            static_cast<ToRep>(static_cast<CommonRep>(f.count())
                                / static_cast<CommonRep>(PeriodQuot::den)));
     }
 };
@@ -129,11 +129,11 @@ template <typename To, typename PeriodQuot, typename CommonRep>
 struct UnitsCast<To, PeriodQuot, CommonRep, false, true>
 {
     template <typename Rep, typename Period, typename Class>
-    static constexpr To Cast(const Units<Rep, Period, Class>& f)
+    static constexpr To cast(const Units<Rep, Period, Class>& f)
     {
         using ToRep = typename To::Rep;
         return To(
-            static_cast<ToRep>(static_cast<CommonRep>(f.Count())
+            static_cast<ToRep>(static_cast<CommonRep>(f.count())
                                * static_cast<CommonRep>(PeriodQuot::num)));
     }
 };
@@ -184,7 +184,7 @@ namespace SI {
 // {{{ Cast between Units of the same Class
 template <typename To, typename Rep, typename Period, typename Class>
 constexpr typename std::enable_if<Implementation::IsUnits<To>::value, To>::type
-UnitsCast(const Units<Rep, Period, Class>& f)
+unitsCast(const Units<Rep, Period, Class>& f)
 {
     using ToPeriod   = typename To::Period;
     using ToRep      = typename To::Rep;
@@ -195,7 +195,7 @@ UnitsCast(const Units<Rep, Period, Class>& f)
                                            CommonRep,
                                            PeriodQuot::num == 1,
                                            PeriodQuot::den == 1>;
-    return Impl::Cast(f);
+    return Impl::cast(f);
 }
 // }}}
 
@@ -231,14 +231,14 @@ public:
                             || (std::ratio_divide<Period2, Period>::den == 1
                                 && !std::is_floating_point<Rep2>::value)>::type>
     constexpr Units(const Units<Rep2, Period2, Class>& f)
-        : mCount(UnitsCast<Units>(f).Count())
+        : mCount(unitsCast<Units>(f).count())
     {
     }
 
     ~Units()       = default;
     Units& operator=(const Units&) = default;
 
-    constexpr Rep Count() const { return mCount; }
+    constexpr Rep count() const { return mCount; }
     constexpr Units operator+() const { return *this; }
     constexpr Units operator-() const { return Units(-mCount); }
 
@@ -258,12 +258,12 @@ public:
 
     Units& operator+=(const Units& f)
     {
-        mCount += f.Count();
+        mCount += f.count();
         return *this;
     }
     Units& operator-=(const Units& f)
     {
-        mCount -= f.Count();
+        mCount -= f.count();
         return *this;
     }
     Units& operator*=(const Rep& rhs)
@@ -287,7 +287,7 @@ public:
     typename std::enable_if<!std::is_floating_point<Rep2>::value, Units&>::type
     operator%=(const Units& f)
     {
-        mCount %= f.Count();
+        mCount %= f.count();
         return *this;
     }
 
@@ -307,7 +307,7 @@ operator+(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(Promote(lhs).Count() + Promote(rhs).Count());
+    return Promote(Promote(lhs).count() + Promote(rhs).count());
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -320,7 +320,7 @@ operator-(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(Promote(lhs).Count() - Promote(rhs).Count());
+    return Promote(Promote(lhs).count() - Promote(rhs).count());
 }
 
 template <
@@ -344,7 +344,7 @@ operator*(const Units<Rep1, Period, Class>& f, const Rep2& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
-    return Promote(Promote(f).Count() * s);
+    return Promote(Promote(f).count() * s);
 }
 
 template <typename Rep1, typename Rep2, typename Period, typename Class>
@@ -364,7 +364,7 @@ operator/(const Units<Rep1, Period, Class>& f, const Rep2& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
-    return Promote(Promote(f).Count() / s);
+    return Promote(Promote(f).count() / s);
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -376,7 +376,7 @@ operator/(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(lhs).Count() / Promote(rhs).Count();
+    return Promote(lhs).count() / Promote(rhs).count();
 }
 
 template <typename Rep1, typename Period, typename Rep2, typename Class>
@@ -389,7 +389,7 @@ operator%(const Units<Rep1, Period, Class>& f, const Rep2& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
-    return Promote(Promote(f).Count() % s);
+    return Promote(Promote(f).count() % s);
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -402,7 +402,7 @@ operator%(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(Promote(lhs).Count() % Promote(rhs).Count());
+    return Promote(Promote(lhs).count() % Promote(rhs).count());
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -414,7 +414,7 @@ operator==(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(lhs).Count() == Promote(rhs).Count();
+    return Promote(lhs).count() == Promote(rhs).count();
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -426,7 +426,7 @@ operator<(const Units<Rep1, Period1, Class>& lhs,
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
     using Promote = typename std::common_type<Arg1, Arg2>::type;
-    return Promote(lhs).Count() < Promote(rhs).Count();
+    return Promote(lhs).count() < Promote(rhs).count();
 }
 
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
@@ -471,7 +471,7 @@ template <typename Rep, typename Period, typename Class>
 std::ostream&
 operator<<(std::ostream& stream, const Units<Rep, Period, Class>& rhs)
 {
-    stream << rhs.Count();
+    stream << rhs.count();
     return stream;
 }
 

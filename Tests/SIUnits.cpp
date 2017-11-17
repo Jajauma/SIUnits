@@ -8,22 +8,22 @@ using X = SI::Units<Rep, Period, XClass>;
 
 TEST(Units, ConstructFromRep2)
 {
-    EXPECT_EQ(X<int>{10}.Count(), 10);
-    EXPECT_FLOAT_EQ(X<float>{9}.Count(), 9.0);
-    EXPECT_FLOAT_EQ(X<float>{-2.1}.Count(), -2.1);
+    EXPECT_EQ(X<int>{10}.count(), 10);
+    EXPECT_FLOAT_EQ(X<float>{9}.count(), 9.0);
+    EXPECT_FLOAT_EQ(X<float>{-2.1}.count(), -2.1);
 }
 
 TEST(Units, ConstructFromOther)
 {
     X<int> f{1999};
     X<int> g{f};
-    EXPECT_EQ(g.Count(), 1999);
+    EXPECT_EQ(g.count(), 1999);
 
     X<float> h{f};
-    EXPECT_FLOAT_EQ(h.Count(), 1999.0);
+    EXPECT_FLOAT_EQ(h.count(), 1999.0);
 
     X<double> i{h};
-    EXPECT_FLOAT_EQ(i.Count(), 1999.0);
+    EXPECT_FLOAT_EQ(i.count(), 1999.0);
 }
 
 TEST(Units, AssigmentOperator)
@@ -31,35 +31,35 @@ TEST(Units, AssigmentOperator)
     X<int> f{1};
     X<int> g{5};
     g = f;
-    EXPECT_EQ(g.Count(), 1);
+    EXPECT_EQ(g.count(), 1);
 }
 
 TEST(Units, PlusOperator)
 {
     X<int> f{1000};
-    EXPECT_EQ((+f).Count(), f.Count());
+    EXPECT_EQ((+f).count(), f.count());
 }
 
 TEST(Units, MinusOperator)
 {
     X<int> f{1000};
-    EXPECT_EQ((-f).Count(), -f.Count());
+    EXPECT_EQ((-f).count(), -f.count());
 }
 
 TEST(Units, IncrementOperator)
 {
     X<int> f{999};
-    EXPECT_EQ((++f).Count(), 1000);
-    EXPECT_EQ((f++).Count(), 1000);
-    EXPECT_EQ(f.Count(), 1001);
+    EXPECT_EQ((++f).count(), 1000);
+    EXPECT_EQ((f++).count(), 1000);
+    EXPECT_EQ(f.count(), 1001);
 }
 
 TEST(Units, DecrementOperator)
 {
     X<int> f{0};
-    EXPECT_EQ((--f).Count(), -1);
-    EXPECT_EQ((f--).Count(), -1);
-    EXPECT_EQ(f.Count(), -2);
+    EXPECT_EQ((--f).count(), -1);
+    EXPECT_EQ((f--).count(), -1);
+    EXPECT_EQ(f.count(), -2);
 }
 
 TEST(Units, AssigmentPlusOperator)
@@ -67,7 +67,7 @@ TEST(Units, AssigmentPlusOperator)
     X<int> f{1};
     X<int> g{5};
     g += f;
-    EXPECT_EQ(g.Count(), 6);
+    EXPECT_EQ(g.count(), 6);
 }
 
 TEST(Units, AssigmentMinusOperator)
@@ -75,32 +75,32 @@ TEST(Units, AssigmentMinusOperator)
     X<int> f{1};
     X<int> g{5};
     f -= g;
-    EXPECT_EQ(f.Count(), -4);
+    EXPECT_EQ(f.count(), -4);
 }
 
 TEST(Units, AssigmentMultiplyOperator)
 {
     X<float> f{0.1};
     f *= 7;
-    EXPECT_FLOAT_EQ(f.Count(), 0.7);
+    EXPECT_FLOAT_EQ(f.count(), 0.7);
     f *= 0.5;
-    EXPECT_FLOAT_EQ(f.Count(), 0.35);
+    EXPECT_FLOAT_EQ(f.count(), 0.35);
 }
 
 TEST(Units, AssigmentDivideOperator)
 {
     X<int> f{49};
     f /= 7.0;
-    EXPECT_EQ(f.Count(), 7);
+    EXPECT_EQ(f.count(), 7);
     f /= 10;
-    EXPECT_EQ(f.Count(), 0);
+    EXPECT_EQ(f.count(), 0);
 }
 
 TEST(Units, AssignmentModuloOperator)
 {
     X<int> f{33};
     f %= 32;
-    EXPECT_EQ(f.Count(), 1);
+    EXPECT_EQ(f.count(), 1);
 }
 
 TEST(Units, BinaryPlusOperator)
@@ -108,7 +108,7 @@ TEST(Units, BinaryPlusOperator)
     X<float, std::kilo> f{3};
     X<int> g{-700};
     X<float, std::kilo> res = f + g;
-    EXPECT_FLOAT_EQ(res.Count(), 2.3);
+    EXPECT_FLOAT_EQ(res.count(), 2.3);
 }
 
 TEST(Units, BinaryMinusOperator)
@@ -116,23 +116,23 @@ TEST(Units, BinaryMinusOperator)
     X<int> f{1000000};
     X<float, std::mega> g{1};
     X<float, std::mega> res = f - g;
-    EXPECT_FLOAT_EQ(res.Count(), 0.);
+    EXPECT_FLOAT_EQ(res.count(), 0.);
 }
 
 TEST(Units, BinaryMultiplyOperator)
 {
     X<float, std::kilo> f{5};
     X<float, std::kilo> res = f * 2;
-    EXPECT_FLOAT_EQ(res.Count(), 10.);
+    EXPECT_FLOAT_EQ(res.count(), 10.);
     res = 0.1 * f;
-    EXPECT_FLOAT_EQ(res.Count(), 0.5);
+    EXPECT_FLOAT_EQ(res.count(), 0.5);
 }
 
 TEST(Units, BinaryDivideOperator)
 {
     X<int, std::kilo> f{25};
     X<int, std::kilo> res = f / 5;
-    EXPECT_EQ(res.Count(), 5);
+    EXPECT_EQ(res.count(), 5);
 
     X<int> g{25};
     EXPECT_FLOAT_EQ(f / g, 1000);
@@ -142,8 +142,8 @@ TEST(Units, BinaryModuloOperator)
 {
     X<int, std::kilo> f{42};
     X<int, std::kilo> g{40};
-    EXPECT_EQ((f % g).Count(), 2);
-    EXPECT_EQ((f % 40).Count(), 2);
+    EXPECT_EQ((f % g).count(), 2);
+    EXPECT_EQ((f % 40).count(), 2);
 }
 
 TEST(Units, ComparisonOperator)
@@ -198,15 +198,15 @@ TEST(Units, ConstexprSwitch)
 
     switch (300)
     {
-    case x1.Count():
+    case x1.count():
         FAIL();
         break;
 
-    case x2.Count():
+    case x2.count():
         FAIL();
         break;
 
-    case x3.Count():
+    case x3.count():
         SUCCEED();
         break;
 
