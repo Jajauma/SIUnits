@@ -489,7 +489,7 @@ operator<<(std::ostream& stream, const Units<Rep, Period, Class>& rhs)
 }
 
 template <typename Rep, typename Period, typename Class>
-std::ostream&
+std::istream&
 operator>>(std::istream& stream, Units<Rep, Period, Class>& rhs)
 {
     Rep tmp{};
