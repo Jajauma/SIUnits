@@ -192,7 +192,7 @@ namespace Implementation {
 // {{{ Cast between Units of the same Class
 template <typename To, typename Rep, typename Period, typename Class>
 constexpr typename std::enable_if<Implementation::IsUnits<To>::value, To>::type
-unitsCast(const Units<Rep, Period, Class>& f)
+unitsCast(Units<Rep, Period, Class> const& f)
 {
     using ToPeriod   = typename To::Period;
     using ToRep      = typename To::Rep;
@@ -222,14 +222,14 @@ public:
     static_assert(_Period::num > 0, "period must be positive");
 
     constexpr Units()   = default;
-    Units(const Units&) = default;
+    Units(Units const&) = default;
 
     template <typename Rep2,
               typename = typename std::enable_if<
                   std::is_convertible<Rep2, Rep>::value
                   && (std::is_floating_point<Rep>::value
                       || !std::is_floating_point<Rep2>::value)>::type>
-    constexpr explicit Units(const Rep2& rep)
+    constexpr explicit Units(Rep2 const& rep)
         : mCount{static_cast<Rep>(rep)}
     {
     }
@@ -239,13 +239,13 @@ public:
                   std::is_floating_point<Rep>::value
                   || (std::ratio_divide<Period2, Period>::den == 1
                       && !std::is_floating_point<Rep2>::value)>::type>
-    constexpr Units(const Units<Rep2, Period2, Class>& f)
+    constexpr Units(Units<Rep2, Period2, Class> const& f)
         : mCount{Implementation::unitsCast<Units>(f).count()}
     {
     }
 
     ~Units()       = default;
-    Units& operator=(const Units&) = default;
+    Units& operator=(Units const&) = default;
 
     constexpr Rep count() const { return mCount; }
     constexpr Units operator+() const { return *this; }
@@ -266,25 +266,25 @@ public:
     Units operator++(int) { return Units{mCount++}; }
     Units operator--(int) { return Units{mCount--}; }
 
-    Units& operator+=(const Units& f)
+    Units& operator+=(Units const& f)
     {
         mCount += f.count();
         return *this;
     }
 
-    Units& operator-=(const Units& f)
+    Units& operator-=(Units const& f)
     {
         mCount -= f.count();
         return *this;
     }
 
-    Units& operator*=(const Rep& rhs)
+    Units& operator*=(Rep const& rhs)
     {
         mCount *= rhs;
         return *this;
     }
 
-    Units& operator/=(const Rep& rhs)
+    Units& operator/=(Rep const& rhs)
     {
         mCount /= rhs;
         return *this;
@@ -292,7 +292,7 @@ public:
 
     template <typename Rep2 = Rep>
     typename std::enable_if<!std::is_floating_point<Rep2>::value, Units&>::type
-    operator%=(const Rep& rhs)
+    operator%=(Rep const& rhs)
     {
         mCount %= rhs;
         return *this;
@@ -300,7 +300,7 @@ public:
 
     template <typename Rep2 = Rep>
     typename std::enable_if<!std::is_floating_point<Rep2>::value, Units&>::type
-    operator%=(const Units& f)
+    operator%=(Units const& f)
     {
         mCount %= f.count();
         return *this;
@@ -316,8 +316,8 @@ template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr typename std::common_type<Units<Rep1, Period1, Class>,
                                     Units<Rep2, Period2, Class>>::type
-operator+(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator+(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -329,8 +329,8 @@ template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr typename std::common_type<Units<Rep1, Period1, Class>,
                                     Units<Rep2, Period2, Class>>::type
-operator-(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator-(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -353,7 +353,7 @@ struct CommonRep<Rep1, Rep2, true>
 
 template <typename Rep1, typename Period, typename Rep2, typename Class>
 constexpr Units<typename CommonRep<Rep1, Rep2>::type, Period, Class>
-operator*(const Units<Rep1, Period, Class>& f, const Rep2& s)
+operator*(Units<Rep1, Period, Class> const& f, Rep2 const& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
@@ -362,7 +362,7 @@ operator*(const Units<Rep1, Period, Class>& f, const Rep2& s)
 
 template <typename Rep1, typename Rep2, typename Period, typename Class>
 constexpr Units<typename CommonRep<Rep2, Rep1>::type, Period, Class>
-operator*(const Rep1& s, const Units<Rep2, Period, Class>& f)
+operator*(Rep1 const& s, Units<Rep2, Period, Class> const& f)
 {
     return f * s;
 }
@@ -373,7 +373,7 @@ constexpr Units<
         Rep1, typename std::enable_if<!Implementation::IsUnits<Rep2>::value,
                                       Rep2>::type>::type,
     Period, Class>
-operator/(const Units<Rep1, Period, Class>& f, const Rep2& s)
+operator/(Units<Rep1, Period, Class> const& f, Rep2 const& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
@@ -383,8 +383,8 @@ operator/(const Units<Rep1, Period, Class>& f, const Rep2& s)
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr typename std::common_type<Rep1, Rep2>::type
-operator/(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator/(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -398,7 +398,7 @@ constexpr Units<
         Rep1, typename std::enable_if<!Implementation::IsUnits<Rep2>::value,
                                       Rep2>::type>::type,
     Period, Class>
-operator%(const Units<Rep1, Period, Class>& f, const Rep2& s)
+operator%(Units<Rep1, Period, Class> const& f, Rep2 const& s)
 {
     using Promote
         = Units<typename std::common_type<Rep1, Rep2>::type, Period, Class>;
@@ -409,8 +409,8 @@ template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr typename std::common_type<Units<Rep1, Period1, Class>,
                                     Units<Rep2, Period2, Class>>::type
-operator%(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator%(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -421,8 +421,8 @@ operator%(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator==(const Units<Rep1, Period1, Class>& lhs,
-           const Units<Rep2, Period2, Class>& rhs)
+operator==(Units<Rep1, Period1, Class> const& lhs,
+           Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -433,8 +433,8 @@ operator==(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator<(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator<(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     using Arg1    = Units<Rep1, Period1, Class>;
     using Arg2    = Units<Rep2, Period2, Class>;
@@ -445,8 +445,8 @@ operator<(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator!=(const Units<Rep1, Period1, Class>& lhs,
-           const Units<Rep2, Period2, Class>& rhs)
+operator!=(Units<Rep1, Period1, Class> const& lhs,
+           Units<Rep2, Period2, Class> const& rhs)
 {
     return !(lhs == rhs);
 }
@@ -454,8 +454,8 @@ operator!=(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator<=(const Units<Rep1, Period1, Class>& lhs,
-           const Units<Rep2, Period2, Class>& rhs)
+operator<=(Units<Rep1, Period1, Class> const& lhs,
+           Units<Rep2, Period2, Class> const& rhs)
 {
     return !(rhs < lhs);
 }
@@ -463,8 +463,8 @@ operator<=(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator>(const Units<Rep1, Period1, Class>& lhs,
-          const Units<Rep2, Period2, Class>& rhs)
+operator>(Units<Rep1, Period1, Class> const& lhs,
+          Units<Rep2, Period2, Class> const& rhs)
 {
     return rhs < lhs;
 }
@@ -472,8 +472,8 @@ operator>(const Units<Rep1, Period1, Class>& lhs,
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
           typename Class>
 constexpr bool
-operator>=(const Units<Rep1, Period1, Class>& lhs,
-           const Units<Rep2, Period2, Class>& rhs)
+operator>=(Units<Rep1, Period1, Class> const& lhs,
+           Units<Rep2, Period2, Class> const& rhs)
 {
     return !(lhs < rhs);
 }
@@ -482,7 +482,7 @@ operator>=(const Units<Rep1, Period1, Class>& lhs,
 // {{{ Supported stream insertion and extraction operators
 template <typename Rep, typename Period, typename Class>
 std::ostream&
-operator<<(std::ostream& stream, const Units<Rep, Period, Class>& rhs)
+operator<<(std::ostream& stream, Units<Rep, Period, Class> const& rhs)
 {
     stream << rhs.count();
     return stream;
